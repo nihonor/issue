@@ -7,13 +7,21 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { IoIosInformationCircleOutline } from "react-icons/io";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { issueSchema } from "@/app/validationSchemas";
+import z from "zod";
 
-interface NewIssueForm {
-  title: string;
-  description: string;
-}
+type IssueForm = z.infer<typeof issueSchema>;
+
 const NewIssuePage = () => {
-  const { register, control, handleSubmit } = useForm<NewIssueForm>();
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<IssueForm>({
+    resolver: zodResolver(issueSchema),
+  });
   const router = useRouter();
   const [error, setError] = useState("");
   return (
@@ -38,6 +46,9 @@ const NewIssuePage = () => {
         })}
       >
         <TextField.Root placeholder="Title" {...register("title")} />
+        {errors.title && (
+          <span style={{ color: "red" }}>{errors.title.message}</span>
+        )}
 
         <Controller
           name="description"
@@ -46,6 +57,9 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Description" {...field} />
           )}
         />
+        {errors.description && (
+          <span style={{ color: "red"}}>{errors.description.message}</span>
+        ) }
         <Button>Submit New Issue</Button>
       </form>
     </div>
