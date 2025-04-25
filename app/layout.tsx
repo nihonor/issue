@@ -38,7 +38,7 @@ export default function RootLayout({
       <body className={`${inter.variable}  antialiased`}>
         <Theme accentColor="violet">
           <NavBar />
-          <main>{children}</main>
+          <main className="m-5">{children}</main>
         </Theme>
       </body>
     </html>

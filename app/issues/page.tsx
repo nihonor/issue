@@ -10,7 +10,7 @@ const IssuePage = async () => {
   await delay(2000);
   return (
     <div className="m-5">
-     <IssueButton/>
+      <IssueButton />
       <Table.Root variant="surface" mt="5">
         <Table.Header>
           <Table.Row>
@@ -27,7 +27,8 @@ const IssuePage = async () => {
           {issues.map((issue) => (
             <Table.Row key={issue.id}>
               <Table.Cell>
-                {issue.title}
+                <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
+
                 <div className="block md:hidden">
                   <IssueStatus status={issue.status} />
                 </div>
