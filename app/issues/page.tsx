@@ -43,5 +43,5 @@ const IssuePage = async () => {
     </div>
   );
 };
-
+//export const dynamic='force-dynamic' for disabling reading data from cache
 export default IssuePage;

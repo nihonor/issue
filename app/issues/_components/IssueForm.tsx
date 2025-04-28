@@ -7,23 +7,20 @@ import { Issue } from "@prisma/client";
 import { Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { IoIosInformationCircleOutline } from "react-icons/io";
+import SimpleMDE from "react-simplemde-editor";
 import z from "zod";
 
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
-  ssr: false,
-});
 type IssueFormData = z.infer<typeof issueSchema>;
 
-interface Props{
-  issue?:Issue
+interface Props {
+  issue?: Issue;
 }
 
-const IssueForm = ({issue}:Props) => {
+const IssueForm = ({ issue }: Props) => {
   const {
     register,
     control,
@@ -38,8 +35,10 @@ const IssueForm = ({issue}:Props) => {
   const onSubmit = handleSubmit(async (data) => {
     try {
       setIsSubmitting(true);
-      await axios.post("/api/issue", data);
+      if (issue) await axios.patch("/api/issue/" + issue.id, data);
+      else await axios.post("/api/issue", data);
       router.push("/issues");
+      //routre.refresh() to automatically refresh
     } catch (error) {
       setIsSubmitting(false);
       setError("An expected error occured");
@@ -56,7 +55,11 @@ const IssueForm = ({issue}:Props) => {
         </Callout.Root>
       )}
       <form className=" space-y-4" onSubmit={onSubmit}>
-        <TextField.Root defaultValue={issue?.title} placeholder="Title" {...register("title")} />
+        <TextField.Root
+          defaultValue={issue?.title}
+          placeholder="Title"
+          {...register("title")}
+        />
 
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
 
@@ -71,7 +74,8 @@ const IssueForm = ({issue}:Props) => {
 
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button disabled={isSubmitting}>
-          Submit New Issue {isSubmitting && <Spinner />}
+          {issue ? "Update issue" : "Submit new issue"}{" "}
+          {isSubmitting && <Spinner />}
         </Button>
       </form>
     </div>
