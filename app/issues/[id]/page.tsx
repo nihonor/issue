@@ -5,12 +5,16 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import EditIssueButton from "./EditIssueButton";
 import IssueDetail from "./IssueDetail";
 
+interface Props {
+  params: { id: string };
+}
 
-const IssueDetailPage = async ({ params }: {params:{id:string}}) => {
- 
+const IssueDetailPage = async ({ params }: Props) => {
+  const issueId = parseInt(params.id);
+  if (isNaN(issueId)) notFound();
+
   const issue = await prisma.issue.findUnique({
-    
-    where: { id: parseInt(params.id) },
+    where: { id: issueId },
   });
   if (!issue) notFound();
 
