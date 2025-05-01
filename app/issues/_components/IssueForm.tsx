@@ -37,8 +37,8 @@ const IssueForm = ({ issue }: Props) => {
       setIsSubmitting(true);
       if (issue) await axios.patch("/api/issue/" + issue.id, data);
       else await axios.post("/api/issue", data);
-      router.push("/issues");
-      //routre.refresh() to automatically refresh
+      router.push("/issues/list");
+      router.refresh() 
     } catch (error) {
       setIsSubmitting(false);
       setError("An expected error occured");
