@@ -5,6 +5,7 @@ import { AiFillBug } from "react-icons/ai";
 import classnames from "classnames";
 import { usePathname } from "next/navigation";
 import { useSession } from "next-auth/react";
+import {Skeleton} from "@/app/components"
 import {
   Avatar,
   Box,
@@ -73,6 +74,7 @@ const NavBar = () => {
             {status === "unauthenticated" && (
               <Link href="/api/auth/signin">Log in</Link>
             )}
+           {status==="loading" &&<Skeleton/>}
           </Box>
         </Flex>
       </Container>
