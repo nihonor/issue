@@ -6,6 +6,7 @@ import { Geist, Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
 import NavBar from "./NavBar";
 import AuthProvider from "./auth/Provider";
+import QueryClientProvider from "./QueryClientProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,6 +37,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable}  antialiased`}>
+        <QueryClientProvider>
         <AuthProvider>
         <Theme accentColor="violet">
           <NavBar />
@@ -44,6 +46,7 @@ export default function RootLayout({
           </main>
         </Theme>
         </AuthProvider>
+        </QueryClientProvider>
       </body>
     </html>
   );
