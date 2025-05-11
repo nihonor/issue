@@ -10,6 +10,8 @@ export async function DELETE(
   if (isNaN(issueId))
     return NextResponse.json({ error: "Invalid issue ID" }, { status: 400 });
 
+
+
   const issue = await prisma.issue.findUnique({
     where: { id: issueId },
   });
